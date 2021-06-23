@@ -30,7 +30,7 @@ http://127.0.0.1:8000/docs
 Once the number of pools element exceeded 100, I convert it to [TDigest](https://github.com/CamDavidsonPilon/tdigest) for a better appending and build-in calculation.
 
 # Testing:
-I'm using build-in fastApi unittest `TestClient`, `TestClient` will ack like an instance of API and send `requests` call to it base on my test setup.
+I'm using build-in fastApi unittest `TestClient`, `TestClient` will act as an instance of API and send `requests` call to it base on my test setup.
 
 You can run unittest for this with
 
