@@ -81,6 +81,8 @@ def addPool(pool: _Pool)->str:
 def getPercentile(percentileBM: _Percentile)->dict:
 	poolId = percentileBM.poolId
 	percentile = percentileBM.percentile
+	if 0 > percentile or percentile > 100:
+		return "percentile must be in range (0 , 100)"
 	curPool = db.get(poolId)
 	return {
 		'poolId': poolId,

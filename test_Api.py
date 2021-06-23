@@ -171,6 +171,7 @@ class TestApi(unittest.TestCase):
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(response.json(), "inserted")
 
+
 		#empty pool_id
 		input_percentile = "10"
 		json_file = {"poolId": "a1", "percentile" : input_percentile}
@@ -208,7 +209,13 @@ class TestApi(unittest.TestCase):
 		self.assertEqual(response.status_code, 422)
 		self.assertEqual(response.json()['detail'][0]['msg'], "value is not a valid float")
 
+		#percentile out of range
+		input_percentile = 100.1
+		json_file = {"poolId":new_pool_id, "percentile":input_percentile}
+		response = self.client.post(
+			'/pools/getPercentile',
+			json= json_file)
+		self.assertEqual(response.json(), "percentile must be in range (0 , 100)")
 
-		
 
 
