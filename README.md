@@ -29,3 +29,13 @@ http://127.0.0.1:8000/docs
 3. Since the ratio between read:write is 1:10, I need an efficient way to append to an existing pool. For a simple calculation of percentile of pools less than 100 value, I use List.
 Once the number of pools element exceeded 100, I convert it to [TDigest](https://github.com/CamDavidsonPilon/tdigest) for a better appending and build-in calculation.
 
+# Testing:
+I'm using build-in fastApi unittest `TestClient`, `TestClient` will ack like an instance of API and send `requests` call to it base on my test setup.
+
+You can run unittest for this with
+
+```python test_Api.py```
+
+you can change unittest's "scaling-factor" by editing `self.N` on line `28`
+
+Feels free to add more unittest as I run out of time at the very end searching for edge-case of the API :sweat_smile:
