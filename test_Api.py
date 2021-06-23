@@ -171,7 +171,6 @@ class TestApi(unittest.TestCase):
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(response.json(), "inserted")
 
-
 		#empty pool_id
 		input_percentile = "10"
 		json_file = {"poolId": "a1", "percentile" : input_percentile}
@@ -217,5 +216,5 @@ class TestApi(unittest.TestCase):
 			json= json_file)
 		self.assertEqual(response.json(), "percentile must be in range (0 , 100)")
 
-
-
+if __name__ == '__main__':
+    unittest.main()
