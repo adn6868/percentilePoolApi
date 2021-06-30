@@ -22,6 +22,8 @@ http://127.0.0.1:8000/docs
 - faster development process :rocket: :full_moon_with_face:
 - build-in type check at run time 
 - come with `docs` so I don't have to 
+- async run in the future if necessary
+- Never use FastAPI and I want to learn new thing
 
 2. Since I need to optimized appending to the existing pool instead of inserting a new pool, `db` is set to simply be a dictionary where the key is the `poolId`
 . This way I get O(1) when calling append on the existing pool.
