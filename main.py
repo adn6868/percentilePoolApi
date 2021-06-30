@@ -3,6 +3,7 @@ from pydantic import BaseModel
 import math
 from typing import List
 from tdigest import TDigest
+import uvicorn 
 
 app = FastAPI()
 db = {}
@@ -97,4 +98,6 @@ def getPercentile(percentileBM: _Percentile)->dict:
 @app.get('/DB')
 def getDB():
 	return [db[key] for key in db.keys()]
-	
+
+if __name__ == '__main__':
+	uvicorn.run(app, host="127.0.0.1", port=8000)
