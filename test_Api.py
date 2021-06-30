@@ -102,7 +102,8 @@ class TestApi(unittest.TestCase):
 		self.assertEqual(response.status_code, 422)
 		self.assertEqual(response.json(), {'detail': [{'loc': ['body', 'poolId'], 'msg': 'value is not a valid integer', 'type': 'type_error.integer'}]})
 
-		#empty pool
+		
+	def test_insert_empty_pool(self):
 		new_pool_id = self.scaling_factor+3
 		json_file = {"poolId":new_pool_id, "poolValues": []}
 		response = self.client.post(
@@ -110,6 +111,20 @@ class TestApi(unittest.TestCase):
 				json = json_file)
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(response.json(), "inserted")
+
+		response = self.client.post(
+				'/pools/addPool',
+				json = json_file)
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response.json(), "appended")
+
+		input_percentile = 99
+		json_file = {"poolId":new_pool_id, "percentile": input_percentile}
+		response = self.client.post(
+				'/pools/getPercentile',
+				json = json_file)
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response.json(), "Unable to calculate percentile on empty pool")
 
 	def test_getPercentile(self):
 		new_pool_id = self.scaling_factor+4
@@ -127,7 +142,6 @@ class TestApi(unittest.TestCase):
 		json_file = {"poolId":new_pool_id, "percentile":input_percentile}
 		response = self.client.post(
 				'/pools/getPercentile',
-				# new_pool_id, input_percentile
 				json= json_file)
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(response.json(), {

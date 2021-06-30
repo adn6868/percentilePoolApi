@@ -37,9 +37,10 @@ class Pool:
 			self.poolValues.update(i)
 
 	def getPercentile(self, percentile):
+
 		if self.useTdigest:
 			return self.poolValues.percentile(percentile)
-		
+
 		#credit: https://stackoverflow.com/questions/2374640/how-do-i-calculate-percentiles-with-python-numpy
 		key = lambda x:x
 		N = self.poolValues
@@ -85,6 +86,8 @@ def getPercentile(percentileBM: _Percentile)->dict:
 	if 0 > percentile or percentile > 100:
 		return "percentile must be in range (0 , 100)"
 	curPool = db.get(poolId)
+	if curPool.getLength() == 0:
+		return "Unable to calculate percentile on empty pool"
 	return {
 		'poolId': poolId,
 		'poolLength': curPool.getLength(),
