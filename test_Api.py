@@ -83,7 +83,7 @@ class TestApi(unittest.TestCase):
 				'/pools/addPool',
 				json = json_file)
 		self.assertEqual(response.status_code, 422)
-		self.assertEqual(response.json()['detail'][0]['msg'], "value is not a valid integer")
+		self.assertEqual(response.json(), {'detail': [{'loc': ['body', 'poolId'],'msg': 'value is not a valid integer', 'type': 'type_error.integer'}]})
 
 		#bad pool values
 		new_pool_id = self.scaling_factor+2
@@ -92,7 +92,7 @@ class TestApi(unittest.TestCase):
 				'/pools/addPool',
 				json = json_file)
 		self.assertEqual(response.status_code, 422)
-		self.assertEqual(response.json()['detail'][0]['msg'], "value is not a valid integer")
+		self.assertEqual(response.json(), {'detail': [{'loc': ['body', 'poolValues', 1], 'msg': 'value is not a valid integer', 'type': 'type_error.integer'}]})
 
 		#empty id
 		json_file = {"poolId":"", "poolValues": [1,2,3]}
@@ -100,7 +100,7 @@ class TestApi(unittest.TestCase):
 				'/pools/addPool',
 				json = json_file)
 		self.assertEqual(response.status_code, 422)
-		self.assertEqual(response.json()['detail'][0]['msg'], "value is not a valid integer")
+		self.assertEqual(response.json(), {'detail': [{'loc': ['body', 'poolId'], 'msg': 'value is not a valid integer', 'type': 'type_error.integer'}]})
 
 		#empty pool
 		new_pool_id = self.scaling_factor+3
@@ -178,7 +178,7 @@ class TestApi(unittest.TestCase):
 				'/pools/getPercentile',
 				json= json_file)
 		self.assertEqual(response.status_code, 422)
-		self.assertEqual(response.json()['detail'][0]['msg'], "value is not a valid integer")
+		self.assertEqual(response.json(), {'detail': [{'loc': ['body', 'poolId'], 'msg': 'value is not a valid integer', 'type': 'type_error.integer'}]})
 
 		#not exist pool_id
 		input_percentile = "10"
@@ -187,9 +187,8 @@ class TestApi(unittest.TestCase):
 				'/pools/getPercentile',
 				json= json_file)
 		self.assertEqual(response.status_code, 422)
-		self.assertEqual(response.json()['detail'][0]['loc'], ["body","poolId"])
-		self.assertEqual(response.json()['detail'][0]['type'], "value_error.missing")
-
+		self.assertEqual(response.json(), {'detail': [{'loc': ['body', 'poolId'], 'msg': 'field required', 'type': 'value_error.missing'}]})
+		
 		#wrong input percentile
 		input_percentile = "a10"
 		json_file = {"poolId":new_pool_id, "percentile":input_percentile}
@@ -197,7 +196,7 @@ class TestApi(unittest.TestCase):
 				'/pools/getPercentile',
 				json= json_file)
 		self.assertEqual(response.status_code, 422)
-		self.assertEqual(response.json()['detail'][0]['msg'], "value is not a valid float")
+		self.assertEqual(response.json(), {'detail': [{'loc': ['body', 'percentile'], 'msg': 'value is not a valid float', 'type': 'type_error.float'}]})
 
 		#empty input percentile
 		input_percentile = ""
@@ -206,7 +205,7 @@ class TestApi(unittest.TestCase):
 				'/pools/getPercentile',
 				json= json_file)
 		self.assertEqual(response.status_code, 422)
-		self.assertEqual(response.json()['detail'][0]['msg'], "value is not a valid float")
+		self.assertEqual(response.json(), {'detail': [{'loc': ['body', 'percentile'], 'msg': 'value is not a valid float', 'type': 'type_error.float'}]})
 
 		#percentile out of range
 		input_percentile = 100.1
