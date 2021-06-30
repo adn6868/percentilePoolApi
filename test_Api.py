@@ -25,9 +25,9 @@ class TestPool(unittest.TestCase):
 class TestApi(unittest.TestCase):
 	def setUp(self):
 		self.client = TestClient(app)
-		self.N = 10
+		self.scaling_factor = 100
 		self.pool_counter = 0
-		self.pool_id_range = list(range(self.N))
+		self.pool_id_range = list(range(self.scaling_factor))
 		random.shuffle(self.pool_id_range)
 
 	def test_insert_pool(self):
@@ -42,12 +42,12 @@ class TestApi(unittest.TestCase):
 			self.pool_counter += 1
 		response = self.client.get('/DB')
 		self.assertEqual(response.status_code, 200)
-		self.assertEqual(self.pool_counter, self.N)
+		self.assertEqual(self.pool_counter, self.scaling_factor)
 
 	def test_append_pool(self):
-		new_pool_id = self.N + 1
+		new_pool_id = self.scaling_factor + 1
 		tmp_pool_values = []
-		new_value = random.randint(0,self.N)
+		new_value = random.randint(0,self.scaling_factor)
 		json_file = {"poolId": new_pool_id, "poolValues": [new_value]}
 		response = self.client.post(
 				'/pools/addPool',
@@ -56,8 +56,8 @@ class TestApi(unittest.TestCase):
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(response.json(), "inserted")
 		self.pool_counter+=1
-		for _ in range(self.N):
-			new_value = random.randint(0,self.N)
+		for _ in range(self.scaling_factor):
+			new_value = random.randint(0,self.scaling_factor)
 			json_file = {"poolId": new_pool_id, "poolValues": [new_value]}
 			tmp_pool_values.append(new_value)
 			response = self.client.post(
@@ -69,7 +69,7 @@ class TestApi(unittest.TestCase):
 		response = self.client.get('/DB')
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(len(response.json()), 1)
-		self.assertEqual(response.json()[0]['poolId'], self.N + 1)
+		self.assertEqual(response.json()[0]['poolId'], self.scaling_factor + 1)
 		if len(tmp_pool_values) < 100:
 			self.assertEqual(response.json()[0]['poolValues'], tmp_pool_values)
 		else:
@@ -86,7 +86,7 @@ class TestApi(unittest.TestCase):
 		self.assertEqual(response.json()['detail'][0]['msg'], "value is not a valid integer")
 
 		#bad pool values
-		new_pool_id = self.N+2
+		new_pool_id = self.scaling_factor+2
 		json_file = {"poolId":new_pool_id, "poolValues": [1,'a',3]}
 		response = self.client.post(
 				'/pools/addPool',
@@ -103,7 +103,7 @@ class TestApi(unittest.TestCase):
 		self.assertEqual(response.json()['detail'][0]['msg'], "value is not a valid integer")
 
 		#empty pool
-		new_pool_id = self.N+3
+		new_pool_id = self.scaling_factor+3
 		json_file = {"poolId":new_pool_id, "poolValues": []}
 		response = self.client.post(
 				'/pools/addPool',
@@ -112,7 +112,7 @@ class TestApi(unittest.TestCase):
 		self.assertEqual(response.json(), "inserted")
 
 	def test_getPercentile(self):
-		new_pool_id = self.N+4
+		new_pool_id = self.scaling_factor+4
 		new_pool_values = list(range(10))
 		input_percentile = 24.5
 
@@ -137,7 +137,7 @@ class TestApi(unittest.TestCase):
 			})
 
 	def test_getPercentileWithTDigest(self):
-		new_pool_id = self.N+5
+		new_pool_id = self.scaling_factor+5
 		new_pool_values = list(range(5000))
 		input_percentile = 30.8
 
@@ -159,7 +159,7 @@ class TestApi(unittest.TestCase):
 		self.assertAlmostEqual(response.json()['percentile'], 1539.5)
 
 	def test_badGetPercentile(self):
-		new_pool_id = self.N + 6
+		new_pool_id = self.scaling_factor + 6
 		new_pool_values = list(range(10))
 
 
