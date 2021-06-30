@@ -36,7 +36,20 @@ Body MUST be included with a json file with the following schema:
 }
 ```
 
-responsed for this post should be a raw string of "inserted" or "appended"
+responsed for this post should be a json file:
+```
+{
+    'poolId': 0,
+    'status': 'inserted'
+}
+```
+or 
+```
+{
+    'poolId': 0,
+    'status': 'appended'
+}
+```
 
 Percentile:
 
@@ -50,11 +63,13 @@ Body MUST be included with a json file with the following schema:
 }
 ```
 responsed for this post should be a json file:
+```
 {
     "poolId": 0,
     "poolLength": 18,
     "percentile": 22.431999999999945
 }
+```
 
 
 # My approach to this problem
