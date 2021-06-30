@@ -2,20 +2,60 @@ This is a homework submission, feels free to copy and re-distributed
 
 # Install Library
 I highly recommend you using [virtualenv](https://pypi.org/project/virtualenv/) for this project.
-All dependency library is listed in requirements.txt, to install all of them run
+All dependency library is listed in `requirements.txt`, to install all of them run
 
 `pip install -r requirements.txt`
 
 # Host API on your localhost
-Run the following command on your terminal inside the project's directory:
+You can run `main.py` app with
 
-`hypercorn main:app`
+`python3 main.py`
 
 API should be host on http://127.0.0.1:8000
 
 since fastApi do all the docs, you can try out the API at 
 
 http://127.0.0.1:8000/docs
+
+For development, use `hypercorn` instead as it come with `--reload` option, allow you to live update code:
+
+`hypercorn main:app --reload`
+
+# POST request Schema
+
+ADDPool:
+
+send a post request with query: `http://127.0.0.1:8000/pools/addPool`
+Body MUST be included with a json file with the following schema:
+```
+{
+    "poolId" : 0,
+    "poolValues" : [
+        1, 2, 3
+        ]
+}
+```
+
+responsed for this post should be a raw string of "inserted" or "appended"
+
+Percentile:
+
+send a post request with query `http://127.0.0.1:8000/pools/getPercentile`
+Body MUST be included with a json file with the following schema:
+
+```
+{
+    "poolId" : 0,
+    "percentile" : 11.3
+}
+```
+responsed for this post should be a json file:
+{
+    "poolId": 0,
+    "poolLength": 18,
+    "percentile": 22.431999999999945
+}
+
 
 # My approach to this problem
 1. I am choosing python and FastAPI and Python because:
