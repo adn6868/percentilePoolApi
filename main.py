@@ -40,6 +40,7 @@ class Pool:
 		if self.useTdigest:
 			return self.poolValues.percentile(percentile)
 		
+		#credit: https://stackoverflow.com/questions/2374640/how-do-i-calculate-percentiles-with-python-numpy
 		key = lambda x:x
 		N = self.poolValues
 		k = (len(N)-1) * percentile/100
